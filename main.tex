@@ -12,6 +12,7 @@
 \usepackage{stmaryrd}   % for \llbracket and \rrbracket
 \usepackage{tikz-cd}
 \usepackage{tkz-graph}  % for drawing groupoids
+\usepackage[nottoc]{tocbibind}
 \usepackage{url}
 \usepackage{xcolor}
 
@@ -27,14 +28,15 @@
 
 % Type theory
 \newcommand{\proves}{\vdash}
-\renewcommand{\int}[1]
-    {\left\llbracket #1 \right\rrbracket}       % Interpretation of syntax in model
+\renewcommand{\int}[1]{\mathopen{}\left\llbracket #1
+    \right\rrbracket\mathclose{}}       % Interpretation of syntax in model
 \newcommand{\emp}{()}%{\mathtt{empty}}          % Empty context
 \newcommand{\Bool}{\mathtt{Bool}}
 \newcommand{\String}{\mathtt{String}}
 \newcommand{\Pii}[2]{\prod_{#1} #2}             % Pi type
 \newcommand{\lam}[2]{\lambda #1 \mapsto #2}
-\newcommand{\Sig}[2]{\sum_{#1} #2}             % Sigma type
+\newcommand{\Sig}[2]{\sum_{#1} #2}              % Sigma type
+\newcommand{\refl}{\mathsf{refl}}
 
 % Substitutions
 \newcommand{\comp}[2]{#2#1}%{#1#2}                     % Composition of substitutions
@@ -68,11 +70,12 @@
 \newcommand{\defeq}{
 	\mathrel{\mathrel{\mathop:}\mkern-1.2mu=}}	% := symbol
 \newcommand{\tup}[1]{\overline{#1}}
-\newcommand{\ang}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ang}[1]{\mathopen{}\left\langle #1 \right\rangle\mathclose{}}
 \newcommand{\pair}[2]{(#1,#2)}
 
 % Formatting
-\newcommand{\n}{\hspace{-0.2em}}                % remove space between [[ ]] and ()
+\newcommand{\n}{%\hspace{-0.2em}
+}                % remove space between [[ ]] and ()
 
 
 \title{Categories with families}
@@ -337,14 +340,11 @@ To actually turn a CwF into a fully fledged model of a given type theory, we hav
 
 
 \section{Set model}
+\label{sec:set}
 
-Let's see our second example of a category with families---the \textit{set-theoretic model} or \textit{set model}.
+Let's see our second example of a category with families---the \textit{set-theoretic model} or \textit{set model}. This could be considered the ``classical'' model of type theory. The definition of the set model will be informal, and we'll leave it to the reader to formalise it in the style of Definition \ref{defn:cwf}.
 
-The definition of the set model will be informal, and we'll leave it to the reader to formalise it in the style of Definition \ref{defn:cwf}.
-
-For every piece of syntax $S$, we give it an interpretation $\int{S}$ as follows.
-
-Given a context\vspace{-7mm}
+For every piece of syntax $S$, we give it an interpretation $\int{S}$ as follows. Given a context\vspace{-3mm}
 \begin{align*}
     \Gamma = \big(\
     x_1 &: A_1,\\
@@ -396,63 +396,7 @@ $$\arraycolsep=1.5mm
 \end{array}$$
 We leave it to the reader to verify the universal property of $\int{\big.\extsub{\sigma}{t}}$.
 
-At this point, we have fully defined a category with families, but for completeness, we will show how to interpret some of the common type- and term-formers in the set model. Henceforth, we will abbreviate $(a_1,\ldots,a_n) \in \int{\Gamma}$ as $\tup{a}$.
-
-
-\subsection{\texorpdfstring{$\Pi$}{Pi}-types}
-
-Given a context $\Gamma$ and types $A, B \in \Ty(\Gamma)$, the arrow type $(A \to B) \in \Ty(\Gamma)$ is interpreted as the family
-%$$\int{\big.A \to B}\n(a_1,\ldots,a_n)\ \defeq\ \big\{ f\colon \int{A}\n(a_1,\ldots,a_n)\, \to\, \int{B}\n(a_1,\ldots,a_n) \big\} $$
-$$\int{\big.A \to B}\n(\tup{a})\ \defeq\ \big\{ \text{functions from}\, \int{A}\n(\tup{a}) \text{ to}\, \int{B}\n(\tup{a}) \big\} $$
-
-More generally, if $A \in \Ty(\Gamma)$ and $B \in \Ty \big( (\Gamma,\, x:A) \big)$, then $\Pii{(x:A)}{B(x)}\in \Ty(\Gamma)$ is interpreted as
-\begin{align*}
-    \int{\Pii{(x:A)}{B(x)}}\hspace{-0.35em}(\tup{a})\ \defeq\ \Big\{ \text{functions sending each } a \in &\int{A}\n(\tup{a}) \\[-5mm]
-    \text{ to an element of } &\int{B}\n(\tup{a},a) \Big\}
-\end{align*}
-
-Given a term $t \in \Tm \big( (\Gamma,\, x:A), B \big)$, the lambda abstraction $(\lam{(x:A)}{t}) \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$ is interpreted as
-$$\int{\big.\lam{(x:A)}{t}}\n(\tup{a})\ \defeq\ a %\in \int{A}\n(\tup{a})
-\mapsto \int{t}\n(\tup{a},a)$$
-
-Now, given a term $s \in \Tm(\Gamma, A)$, we write $B(s) \defeq \substType{(\id,s)}{B} \in \Ty(\Gamma)$, where $\extsub{\id}{s}$ is the extended substitution $\Gamma \to (\Gamma,\, x:A)$. Given another term $f \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$, the application $f(s) \in \Tm\big(\Gamma,B(s) \big)$ is interpreted as
-$$\int{\big.f(s)
-}\n(\tup{a})\ \defeq\ \int{f}\n(\tup{a}) \big( \int{s}\n(\tup{a}) \big)$$
-
-Letting $t(s) \defeq \substTerm{\extsub{\id}{s}}{t} \in \Ty\big(\Gamma,B(s)\big)$, the computation rule $$(\lam{(x:A)}{t})(s)\ \equiv\ t(s)$$ holds since both sides are interpreted as $\tup{a}\, \mapsto\, \int{t}\n\big(\tup{a}, \int{s}\n(\tup{a}) \big)$.
-
-Given $f \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$, write $f(x) \in \Tm \big( (\Gamma,\, x:A), B \big)$ for the term interpreted $$\int{\big.f(x)}\n(\tup{a},a)\, \defeq\, \int{f}\n(\tup{a})(a)$$
-Then $\int{\big.\lam{(x:A)}{f(x)}} = \int{f}$, validating the uniqueness rule $$\big( \lam{(x:A)}{f(x)} \big) \equiv f$$
-
-
-\subsection{\texorpdfstring{$\Sigma$}{Sigma}-types}
-
-Given a context $\Gamma$ and types $A, B \in \Ty(\Gamma)$, the product type $(A \times B) \in \Ty(\Gamma)$ is interpreted as the family
-%$$\int{\big.A \to B}\n(a_1,\ldots,a_n)\ \defeq\ \big\{ f\colon \int{A}\n(a_1,\ldots,a_n)\, \to\, \int{B}\n(a_1,\ldots,a_n) \big\} $$
-$$\int{\big.A \times B}\n(\tup{a})\ \defeq\ \int{A}\n(\tup{a}) \times \int{B}\n(\tup{a})$$
-
-More generally, if $A \in \Ty(\Gamma)$ and $B \in \Ty \big( (\Gamma,\, x:A) \big)$, then $\Sig{(x:A)}{B(x)}\in \Ty(\Gamma)$ is interpreted as
-\begin{align*}
-    \int{\Sig{(x:A)}{B(x)}}\hspace{-0.35em}(\tup{a})\ \defeq\ \big\{ (a,b) \mathrel{\big|} a \in &\int{A}\n(\tup{a}),\ b \in \int{B}\n(\tup{a},a) \big\}
-\end{align*}
-
-Given terms $s \in \Tm(\Gamma, A)$ and $t \in \Tm \big( (\Gamma,\, x:A), B \big)$, the pair $(s,t) \in \Tm\Big( \Gamma, \Sig{(x:A)}{B(x)} \Big)$ is interpreted as
-$$\int{\big.(s,t)}\n(\tup{a})\ \defeq\ \Big( \int{s}\n(\tup{a}),\ \int{t}\n\big(\, \tup{a},\,\int{s}\n(\tup{a}) \,\big) \Big)$$
-
-{\color{red} Validate elimination and computation rules}
-
-
-\subsection{Equality types}
-
-Perhaps the distinguishing feature of the set model is its treatment of equality types. Unlike in other models, equality here behaves exactly like a classical mathematician would expect.
-
-Given a type $A \in \Ty(\Gamma)$, the equality type $(x =_A y) \in \Ty\big((\Gamma,\, x:A,\, y:A\pi)\big)$ is interpreted as
-$$\int{\big.x =_A y}\n(\tup{a},b,c) \defeq \begin{cases}
-    \{ * \} & b=c \\
-    \varnothing & b \neq c
-\end{cases}$$
-
-{\color{red} Check rules}
+At this point, we have fully defined a category with families. For the interested reader, we show in Appendix \ref{app:set} how to interpret $\Pi$-types, $\Sigma$-types and equality in the set model.
 
 
 \section{Groupoid model}
@@ -548,7 +492,7 @@ The empty context is interpreted by the trivial groupoid:
 A substitution $\sigma$ from $\Delta$ to $\Gamma$ is interpreted as a groupoid homomorphism $\int{\sigma}\colon \int{\Delta} \to \int{\Gamma}$.
 
 
-\section{(Pre)sheaf model}
+\section{Conclusion}
 
 other models such as 
 setoid model
@@ -575,9 +519,82 @@ Univalent Foundations of Mathematics} (a.k.a.\ ``the HoTT book''). 2013. Availab
 \bibitem{nlab-cwfs} The nLab. \textit{Categorical model of dependent types $>$ Categories with families.} \url{https://ncatlab.org/nlab/show/categorical+model+of+dependent+types#categories_with_families}
 
 \bibitem{nlab-synt} The nLab. \textit{Syntactic category.} \url{https://ncatlab.org/nlab/show/syntactic+category}
-
-
-
 \end{thebibliography}
+
+
+\appendix
+
+\section{More on the set model}
+\label{app:set}
+
+In this section, we show how to interpret some of the common type- and term-formers in the set model defined in \S\ref{sec:set}. Hence, this should be read directly after that section. Henceforth, we will abbreviate $(a_1,\ldots,a_n) \in \int{\Gamma}$ as $\tup{a}$.
+
+
+\subsection{\texorpdfstring{$\Pi$}{Pi}-types}
+
+Given a context $\Gamma$ and types $A, B \in \Ty(\Gamma)$, the arrow type $(A \to B) \in \Ty(\Gamma)$ is interpreted as the family
+%$$\int{\big.A \to B}\n(a_1,\ldots,a_n)\ \defeq\ \big\{ f\colon \int{A}\n(a_1,\ldots,a_n)\, \to\, \int{B}\n(a_1,\ldots,a_n) \big\} $$
+$$\int{\big.A \to B}\n(\tup{a})\ \defeq\ \big\{ \text{functions from}\, \int{A}\n(\tup{a}) \text{ to}\, \int{B}\n(\tup{a}) \big\} $$
+
+More generally, if $A \in \Ty(\Gamma)$ and $B \in \Ty \big( (\Gamma,\, x:A) \big)$, then $\Pii{(x:A)}{B(x)}\in \Ty(\Gamma)$ is interpreted as
+\begin{align*}
+    \int{\Pii{(x:A)}{B(x)}}\hspace{-0.2em}(\tup{a})\ \defeq\ \Big\{ \text{functions sending each } a \in &\int{A}\n(\tup{a}) \\[-5mm]
+    \text{ to an element of } &\int{B}\n(\tup{a},a) \Big\}
+\end{align*}
+
+Given a term $t \in \Tm \big( (\Gamma,\, x:A), B \big)$, the lambda abstraction $(\lam{(x:A)}{t}) \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$ is interpreted as
+$$\int{\big.\lam{(x:A)}{t}}\n(\tup{a})\ \defeq\ a %\in \int{A}\n(\tup{a})
+\mapsto \int{t}\n(\tup{a},a)$$
+
+Now, given a term $s \in \Tm(\Gamma, A)$, we write $B(s) \defeq \substType{(\id,s)}{B} \in \Ty(\Gamma)$, where $\extsub{\id}{s}$ is the extended substitution $\Gamma \to (\Gamma,\, x:A)$. Given another term $f \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$, the application $f(s) \in \Tm\big(\Gamma,B(s) \big)$ is interpreted as
+$$\int{\big.f(s)
+}\n(\tup{a})\ \defeq\ \int{f}\n(\tup{a}) \big( \int{s}\n(\tup{a}) \big)$$
+
+Letting $t(s) \defeq \substTerm{\extsub{\id}{s}}{t} \in \Ty\big(\Gamma,B(s)\big)$, the computation rule $$(\lam{(x:A)}{t})(s)\ \equiv\ t(s)$$ holds since both sides are interpreted as $\tup{a}\, \mapsto\, \int{t}\n\big(\tup{a}, \int{s}\n(\tup{a}) \big)$.
+
+Given $f \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$, write $f(x) \in \Tm \big( (\Gamma,\, x:A), B \big)$ for the term interpreted $$\int{\big.f(x)}\n(\tup{a},a)\, \defeq\, \int{f}\n(\tup{a})(a)$$
+Then $\int{\big.\lam{(x:A)}{f(x)}} = \int{f}$, validating the uniqueness rule $$\big( \lam{(x:A)}{f(x)} \big) \equiv f$$
+
+
+\subsection{\texorpdfstring{$\Sigma$}{Sigma}-types}
+
+Given a context $\Gamma$ and types $A, B \in \Ty(\Gamma)$, the product type $(A \times B) \in \Ty(\Gamma)$ is interpreted as the family
+%$$\int{\big.A \to B}\n(a_1,\ldots,a_n)\ \defeq\ \big\{ f\colon \int{A}\n(a_1,\ldots,a_n)\, \to\, \int{B}\n(a_1,\ldots,a_n) \big\} $$
+$$\int{\big.A \times B}\n(\tup{a})\ \defeq\ \int{A}\n(\tup{a}) \times \int{B}\n(\tup{a})$$
+
+More generally, if $A \in \Ty(\Gamma)$ and $B \in \Ty \big( (\Gamma,\, x:A) \big)$, then $\Sig{(x:A)}{B(x)}\in \Ty(\Gamma)$ is interpreted as
+\begin{align*}
+    \int{\Sig{(x:A)}{B(x)}}\hspace{-0.2em}(\tup{a})\ \defeq\ \big\{ (a,b) \mathrel{\big|} a \in &\int{A}\n(\tup{a}),\ b \in \int{B}\n(\tup{a},a) \big\}
+\end{align*}
+
+Given terms $s \in \Tm(\Gamma, A)$ and $t \in \Tm \big( (\Gamma,\, x:A), B \big)$, the pair $(s,t) \in \Tm\Big( \Gamma, \Sig{(x:A)}{B(x)} \Big)$ is interpreted as
+$$\int{\big.(s,t)}\n(\tup{a})\ \defeq\ \Big( \int{s}\n(\tup{a}),\ \int{t}\n\big(\, \tup{a},\,\int{s}\n(\tup{a}) \,\big) \Big)$$
+
+{\color{red} Interpret projections, validate computation rule}
+
+
+\subsection{Equality}
+
+Perhaps the distinguishing feature of the set model is its treatment of equality types. Unlike in other models, equality here behaves exactly like a classical mathematician would expect.
+
+Given a type $A \in \Ty(\Gamma)$, the equality type $(x =_A y) \in \Ty\big((\Gamma,\, x:A,\, y:A\pi)\big)$ is interpreted as
+$$\int{\big.x =_A y}\n(\tup{a},b,c) \defeq \begin{cases}
+    \{ * \} & b=c \\
+    \varnothing & b \neq c
+\end{cases}$$
+
+Given $s \in \Tm(\Gamma,A)$, we interpret $\refl_s \in {\color{red} \Ty\big((\Gamma,\, x:A,\, y:A\pi), (s =_A s) \big) ??}$ as $\int{\refl_s}(\tup{a}) = *$.
+
+{\color{red} Check rules}
+
+
+\section{More on the groupoid model}
+
+\subsection{\texorpdfstring{$\Pi$}{Pi}-types}
+
+\subsection{\texorpdfstring{$\Sigma$}{Sigma}-types}
+
+\subsection{Equality}
+
 
 \end{document}
