@@ -294,9 +294,14 @@ with substitutions acting by composition. Now, the isomorphism is a \textit{natu
 \end{tikzcd}
 \end{center}
 
+Another nice categorical way to package this up is as follows. Recall that for $\Gamma \in \C$, the \textit{slice category} $\C/\Gamma$ is the category whose:
+\begin{itemize}
+    \item Objects are substitutions $\sigma\colon \Delta \to \Gamma$, for some $\Delta \in \C$;
+    
+    \item Morphisms from $\sigma\colon \Delta \to \Gamma$ to $\sigma'\colon \Delta' \to \Gamma$ are substitutions $\tau\colon \Delta \to \Delta'$ such that $\comp{\tau}{\sigma'} = \sigma$.
+\end{itemize}
 
-{\color{red}
-representing object - nlab \cite{nlab-cwfs}}
+Now, for every $A \in \Ty(\Gamma)$, we can see $M(-,\Gamma,A)$ as a functor $\op{(\C/\Gamma)} \to \Set$, which sends $\sigma\colon \Delta \to \Gamma$ to $\Tm(\Delta,A\sigma)$, and sends morphisms $\tau\colon \Delta \to \Delta'$ to the map they induce on terms (\S\ref{sec:types-terms}). Above, we saw this functor $M$ was naturally isomorphic to the \textit{hom-set functor} $\Hom(-,\pi)\colon \op{(\C/\Gamma)} \to \Set$. This is to say that the projection $\pi$ is a \textit{representing object} for the functor $M$ \cite{nlab-cwfs}.
 
 
 \section{Categories with families}
