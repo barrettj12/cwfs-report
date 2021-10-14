@@ -59,9 +59,10 @@
 \newcommand{\G}{\mathcal{G}}
 \newcommand{\Hh}{\mathcal{H}}
 \DeclareMathOperator{\ob}{ob}
-\renewcommand{\hom}[3][]{(#2 =_{#1} #3)}
+\renewcommand{\hom}[3][]{\mathrm{hom}_{#1}\mathopen{}\left( #2, #3 \right)\mathclose{}}
+%{\mathopen{}\left( #2 =_{#1} #3 \right)\mathclose{}}
 \newcommand{\inv}[1]{#1^{-1}}
-\newcommand{\gfunc}[1]{\hat{#1}}
+\newcommand{\gfunc}[1]{\overline{#1}}
 
 % Misc math
 \newcommand{\N}{\mathbb{N}}		        	    % Natural numbers
@@ -69,7 +70,7 @@
 \DeclareMathOperator{\id}{id}				    % Identity function
 \newcommand{\defeq}{
 	\mathrel{\mathrel{\mathop:}\mkern-1.2mu=}}	% := symbol
-\newcommand{\tup}[1]{\overline{#1}}
+\newcommand{\tup}[1]{\overline{\smash{#1}\vphantom{a}}}
 \newcommand{\ang}[1]{\mathopen{}\left\langle #1 \right\rangle\mathclose{}}
 \newcommand{\pair}[2]{(#1,#2)}
 
@@ -342,7 +343,7 @@ To actually turn a CwF into a fully fledged model of a given type theory, we hav
 \section{Set model}
 \label{sec:set}
 
-Let's see our second example of a category with families---the \textit{set-theoretic model} or \textit{set model}. This could be considered the ``classical'' model of type theory. The definition of the set model will be informal, and we'll leave it to the reader to formalise it in the style of Definition \ref{defn:cwf}.
+Let's see our second example of a category with families---the \textit{set-theoretic model} or \textit{set model} \cite{coquand}. This could be considered the ``classical'' model of type theory. The definition of the set model will be informal, and we'll leave it to the reader to formalise it in the style of Definition \ref{defn:cwf}.
 
 For every piece of syntax $S$, we give it an interpretation $\int{S}$ as follows. Given a context\vspace{-3mm}
 \begin{align*}
@@ -400,8 +401,13 @@ At this point, we have fully defined a category with families. For the intereste
 
 
 \section{Groupoid model}
+\label{sec:gpd}
 
-{\color{red} bla bla bla}
+With the set model under our belt, let's move on to another important model---the \textit{groupoid model}. Historically, this model is important because it was the first model of Martin-L\"of type theory in which \textit{uniqueness of identity proofs} (UIP) failed---that is, we can find a type $A$ and elements $a, b : A$ such that $(a = b)$ contains more than one distinct element.
+
+The idea is fairly simple, actually. It has long been observed that the equalities on a type $A$ form a \textit{groupoid} structure on $A$. Hofmann and Streicher's idea was to \textit{interpret} types as groupoids. Then, we can show UIP fails by exhibiting a groupoid with two distinct parallel paths (of which there are many). It is a bit more complex to turn this idea into a full model of MLTT, but we will show how in this section.
+
+The groupoid model is essentially built by ``adding extra structure'' to the set model, so we recommend fully understanding \S\ref{sec:set} before reading this one. For completeness, we'll start by defining groupoids.
 
 \begin{definition}
     A groupoid is a category where every morphism has an inverse. More concretely, a groupoid $\G$ consists of:
@@ -418,7 +424,11 @@ At this point, we have fully defined a category with families. For the intereste
     \end{itemize}
     such that:
     \begin{itemize}
-        \item {\color{red} identity}
+        \item For every $f \in \hom{a}{b}$, $f \circ \id_a = f$ and $\id_b \circ f = f$;
+        
+        \item For every $f \in \hom{a}{b}$, $\inv{f} \circ f = \id_a$ and $f \circ \inv{f} = \id_b$;
+        
+        \item For every $f \in \hom{a}{b}$, $g \in \hom{b}{c}$ and $c \in \hom{c}{d}$, $h \circ (g \circ f) = (h \circ g) \circ f$.
     \end{itemize}
 \end{definition}
 
@@ -440,14 +450,7 @@ To model \textit{dependent} types using groupoids, we need a notion of a family 
 
 The groupoid axioms ensure that each $F_p$ is an isomorphism of groupoids. The intended meaning is that if $a=b$ in $\G$, then the groupoids $\Hh_a$ and $\Hh_b$ are isomorphic.
 
-{\color{red} Groupoid model is ``refinement'' of set model}
-
-
-
-
-For every piece of syntax $S$, we give it an interpretation $\int{S}$ as follows.
-
-Given a context\vspace{-6mm}
+Now, we're ready to define the groupoid model. For every piece of syntax $S$, we give it an interpretation $\int{S}$ as follows. Given a context%\vspace{-6mm}
 \begin{align*}
     \Gamma = \big(\
     x_1 &: A_1,\\
@@ -464,22 +467,29 @@ the type $A_i(x_1,\ldots,x_{i-1})$ is interpreted as a family of \textit{groupoi
     
     \item For each $a_1 \in \int{A_1}$ and $a_2 \in \int{A_2}\n(a_1)$, a groupoid $\int{A_3}\n(a_1,a_2)$;
 \end{itemize}
-and so on. But, additionally, the equalities in earlier types induce coherences in the later types:
+and so on. But, additionally, the equalities in earlier types induce \textit{coherences} in the later types:
 
-{\color{red} Need better notation than $\gfunc{p}$ for multiple elements}
+%{\color{red} Need better notation than $\gfunc{p}$ for multiple elements}
 \begin{itemize}
-    \item For each $\int{A_1}$-morphism $p_1 \in \hom{a_1}{b_1}$,\\ we get a groupoid isomorphism $\gfunc{p}_1\colon \int{A_2}\n(a_1) \to \int{A_2}\n(b_1)$;
+    \item For each $\int{A_1}$-morphism $p_1 \in \hom{a_1}{b_1}$,\\ we get a groupoid isomorphism $\gfunc{p_1}\colon \int{A_2}\n(a_1) \to \int{A_2}\n(b_1)$;
     
-    \item For each $\int{A_1}$-morphism $p_1 \in \hom{a_1}{b_1}$\\ and $\int{A_2}\n(b_1)$-morphism $p_2 \in \hom{\gfunc{p}_1 a_2}{b_2}$,\\ we get a groupoid isomorphism $\gfunc{p_1}{p_2}\colon \int{A_3}\n(a_1,a_2) \to \int{A_3}\n(b_1,b_2)$;
+    \item For each $\int{A_1}$-morphism $p_1 \in \hom{a_1}{b_1}$\\ and $\int{A_2}\n(b_1)$-morphism $p_2 \in \hom{\gfunc{p_1} a_2}{b_2}$,\\ we get a groupoid isomorphism $\gfunc{p_1p_2}\colon \int{A_3}\n(a_1,a_2) \to \int{A_3}\n(b_1,b_2)$;
 \end{itemize}
 and so on.
 
 As in the set model, $\Gamma$ is interpreted as the set $\int{\Gamma}$ of \textit{possible values} for its variables: $$\int{\Gamma} \defeq \Big\{ (a_1,\ldots,a_n) \mathrel{\Big|} a_i \in \int{A_i}\n(a_1,\ldots,a_{i-1}) \Big\}$$
 
 The morphisms of $\int{\Gamma}$ are those induced by the groupoid structure on each of the $\int{A_i}$:
-$$\hom[\int{\Gamma}]{(a_1,\ldots,a_n)}{(b_1,\ldots,b_n)} \defeq \{ (p_1, \ldots, p_n) \mid p_1 \in {\color{red} \hom[\int{A_i}]{a_1}{b_1} }, p_2 {\color{red} eek} \}$$
+\begin{align*}
+    \hom[\int{\Gamma}]{\big.(a_1,\ldots,a_n)}{(b_1,\ldots,b_n)}\\ \defeq\ \big\{ (p_1, \ldots, p_n)& \mathrel{\big|} p_i \in \hom{\gfunc{p_1 \cdots p_{i-1}} a_i}{b_i} \big\}
+\end{align*}
 
-The empty context is interpreted by the trivial groupoid:
+\vspace{-2mm}
+\begin{minipage}[b]{0.83\linewidth}
+The empty context is interpreted by the trivial groupoid with one object and one identity morphism, as shown on the right.
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.12\linewidth}
 \begin{tikzpicture}[scale=1]
     \GraphInit[vstyle=Classic]
     \SetVertexSimple[MinSize=1mm]
@@ -487,23 +497,72 @@ The empty context is interpreted by the trivial groupoid:
     \Loop[dist=8mm,dir=NO%label=$\id$,labelstyle={above}
     ](A)
 \end{tikzpicture}
+\end{minipage}
 
 
 A substitution $\sigma$ from $\Delta$ to $\Gamma$ is interpreted as a groupoid homomorphism $\int{\sigma}\colon \int{\Delta} \to \int{\Gamma}$.
 
+Henceforth, we will abbreviate $(a_1,\ldots,a_n) \in \int{\Gamma}$ as $\tup{a}$. For a context $\Gamma$, a \textit{type $A$ over $\Gamma$} is a family of \textit{groupoids} $\int{A}$ indexed by $\int{\Gamma}$. That is, for every $\tup{a} \in \int{\Gamma}$, we have a groupoid $\int{A}(\tup{a})$, and for every $\int{\Gamma}$-morphism $p \in \hom{\tup{a}}{\tup{b}}$, a groupoid isomorphism $\int{A}(p)\colon \int{A}(\tup{a}) \to \int{A}(\tup{b})$.
+
+For a type $A$ over $\Gamma$, a term $s \in \Tm(\Gamma,A)$ is interpreted as a ``dependent functor'' $\int{\Gamma} \to \int{A}$:
+\begin{itemize}
+    \item For each $\tup{a} \in \int{\Gamma}$, we have an object $\int{s}(\tup{a}) \in \int{A}(\tup{a})$;
+    
+    \item For each $\int{\Gamma}$-morphism $p \in \hom{\tup{a}}{\tup{b}}$, an $\int{A}(\tup{b})$-morphism $$\int{s}(p)\, \in\, \hom{\Big.\int{A}(p) \big( \int{s}(\tup{a}) \big)}{\,\int{s}(\tup{b})}$$
+\end{itemize}
+
+Given a substitution $\sigma\colon \Gamma \to \Delta$ and a type $B \in \Ty(\Delta)$, we interpret $\substType{\sigma}{B} \in \Ty(\Gamma)$ as follows. $\int{\substType{\sigma}{B}}$ sends:
+\begin{itemize}
+    \item $\tup{a} \in \int{\Gamma}$ to the groupoid $\int{B}(\sigma(\tup{a}))$;
+    
+    \item $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to the homomorphism $\int{B}(\sigma(p))\colon \int{B}(\sigma(\tup{a})) \to \int{B}(\sigma(\tup{b}))$.
+\end{itemize}
+
+Similarly, for $t \in \Tm(\Delta,B)$, we interpret $\substTerm{\sigma}{t} \in \Tm(\Gamma,\substType{\sigma}{B})$ as the map $\int{\substTerm{\sigma}{t}}$ sending:
+\begin{itemize}
+    \item $\tup{a} \in \int{\Gamma}$ to the object $\int{t}(\sigma(\tup{a})) \in \int{B}(\sigma(\tup{a}))$;
+    
+    \item $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to the $\int{B}(\sigma(\tup{b}))$-morphism $$\int{t}(\sigma(p))\, \in\, \hom{\Big.\int{B}(\sigma(p)) \big( \int{t}(\sigma(\tup{a})) \big)}{\,\int{t}(\sigma(\tup{b}))}$$
+\end{itemize}
+
+Given a context $\Gamma$ and a type $A \in \Ty(\Gamma)$, the extended context $(\Gamma,\, x : A)$ is interpreted as the groupoid with objects
+$$\int{\big.\Gamma,\, x : A} \defeq \big\{ (\tup{a},a) \mathrel{\big|} \tup{a} \in \int{\Gamma},\ a \in \int{A}(\tup{a}) \big\}$$
+and morphisms
+\begin{align*}
+    \hom[\int{\Gamma,\, x : A}]{\big.(\tup{a},a)}{(\tup{b},b)}\ \defeq\ \Big\{ (p,p') \mathrel{\Big|}\ &p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}},\\[-2mm]
+    &p' \in \hom[\int{A}(\tup{b})]{\big.\int{A}(p)(a)}{\,b} \Big\}
+\end{align*}
+
+The projection $\pi$ from $(\Gamma,\, x : A)$ to $\Gamma$ is interpreted as the groupoid homomorphism sending $(\tup{a},a)$ to $\tup{a}$, and $(p,p')$ to $p$. Similarly, the second projection $q$ is interpreted as the term $\int{q} \in \int{\Tm \big( (\Gamma,\, x : A), \substType{\pi}{A} \big)}$ sending $(\tup{a},a)$ to $a$, and $(p,p')$ to $p'$.
+
+Finally, given a substitution $\sigma\colon \Delta \to \Gamma$ and term $t \in \Tm \big( \Delta, \substType{\sigma}{A} \big)$, we interpret the extended substitution $\extsub{\sigma}{t}: \Delta \to (\Gamma,\, x : A)$ as follows:
+\begin{itemize}
+    \item $\int{\extsub{\sigma}{t}}$ maps $\tup{c} \in \int{\Delta}$ to $\big( \int{\sigma}(\tup{c}), \int{t}(\tup{c}) \big) \in \int{\Gamma,\, x : A}$.
+    
+    \item $\int{\extsub{\sigma}{t}}$ maps $p \in \hom[\int{\Delta}]{\tup{c}}{\tup{d}}$ to $\big( \int{\sigma}(p), \int{t}(p) \big)$.
+\end{itemize}
+
+
+\subsection{Equality}
+
+We have now fully defined a category with families. We will leave the interpretation of $\Pi$-types and $\Sigma$-types to Appendix \ref{app:gpd}. However, we will talk here about \textit{equality types}, since they are the original motivation (and arguably, the defining feature) of the groupoid model.
+
+{\color{red} finish this}
+
 
 \section{Conclusion}
 
+{\color{red}
 other models such as 
 setoid model
 higher groupoid model
 presheaf model
-sheaf model
+sheaf model}
 
 
 \begin{thebibliography}{9}
 
-\bibitem{coq} Thierry Coquand. \textit{What is a model of type theory?} Notes from the Special Year on Univalent Foundations of Mathematics, Institute for Advanced Study, Princeton, 2012. \url{https://ncatlab.org/ufias2012/files/cwf1.pdf}
+\bibitem{coquand} Thierry Coquand. \textit{What is a model of type theory?} Notes from the Special Year on Univalent Foundations of Mathematics, Institute for Advanced Study, Princeton, 2012. \url{https://ncatlab.org/ufias2012/files/cwf1.pdf}
 
 \bibitem{peter} Peter Dybjer. \textit{Internal type theory.} pp120--134 in: Stefano Berardi, Mario Coppo (eds.), \textit{Types for Proofs and Programs} (proceedings from TYPES '95, Torino, Italy, June 1995). Lecture Notes in Computer Science \textbf{1158}, Springer, 1996. Available online at \url{https://www.cse.chalmers.se/~peterd/papers/InternalTT.pdf}
 
@@ -589,12 +648,19 @@ Given $s \in \Tm(\Gamma,A)$, we interpret $\refl_s \in {\color{red} \Ty\big((\Ga
 
 
 \section{More on the groupoid model}
+\label{app:gpd}
+
+In this section, we show how to interpret $\Pi$-types and $\Sigma$-types in the groupoid model, as defined in \S\ref{sec:gpd}. This section should be read after \S\ref{sec:set}, \S\ref{sec:gpd} and Appendix \ref{app:set}. As in the previous appendix, we will abbreviate $(a_1,\ldots,a_n) \in \int{\Gamma}$ as $\tup{a}$.
+
 
 \subsection{\texorpdfstring{$\Pi$}{Pi}-types}
 
+{\color{red} finish this}
+
+
 \subsection{\texorpdfstring{$\Sigma$}{Sigma}-types}
 
-\subsection{Equality}
+{\color{red} finish this}
 
 
 \end{document}
