@@ -7,7 +7,8 @@ see two more models - the set model and the groupoid model.
 
 ---
 
-This project is open-source and licensed under the [CC BY-NC-SA license](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+
 This means you are free to distribute, remix, adapt, and build upon the material in any medium or
 format, subject to the following conditions:
  - You must credit me as a co-author/co-creator.
