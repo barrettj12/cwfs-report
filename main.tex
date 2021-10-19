@@ -547,7 +547,15 @@ Finally, given a substitution $\sigma\colon \Delta \to \Gamma$ and term $t \in \
 
 We have now fully defined a category with families. We will leave the interpretation of $\Pi$-types and $\Sigma$-types to Appendix \ref{app:gpd}. However, we will talk here about \textit{equality types}, since they are the original motivation (and arguably, the defining feature) of the groupoid model.
 
-{\color{red} finish this}
+Given a type $A \in \Ty(\Gamma)$ and terms $s, t \in \Tm(\Gamma, A)$, the equality type $(s =_A t) \in \Ty(\Gamma)$ is interpreted as the \textit{hom-set}
+$$\int{\big.s =_A t}\n(\tup{a})\, \defeq\, \hom[\int{A}(\tup{a})]{\big.\int{s}(\tup{a})}{\int{t}(\tup{a})}$$
+as a \textit{discrete} groupoid (i.e.\ the only morphisms are identities).
+
+Given $s \in \Tm(\Gamma,A)$, we interpret $\refl_s \in \Tm\big(\Gamma, (s =_A s) \big)$ as $$\int{\refl_s}\colon\, \tup{a}\, \mapsto\, \id_{\int{s}(\tup{a})}$$
+
+{\color{red} Check rules}
+
+Importantly, since there are groupoids having distinct parallel morphisms, there are types in this model having distinct equalities between two elements. Therefore, the groupoid model provides a counterexample to UIP.
 
 
 \section{Conclusion}
@@ -636,13 +644,13 @@ $$\int{\big.(s,t)}\n(\tup{a})\ \defeq\ \Big( \int{s}\n(\tup{a}),\ \int{t}\n\big(
 
 Perhaps the distinguishing feature of the set model is its treatment of equality types. Unlike in other models, equality here behaves exactly like a classical mathematician would expect.
 
-Given a type $A \in \Ty(\Gamma)$, the equality type $(x =_A y) \in \Ty\big((\Gamma,\, x:A,\, y:A\pi)\big)$ is interpreted as
-$$\int{\big.x =_A y}\n(\tup{a},b,c) \defeq \begin{cases}
-    \{ * \} & b=c \\
-    \varnothing & b \neq c
+Given a type $A \in \Ty(\Gamma)$ and terms $s, t \in \Tm(\Gamma, A)$, the equality type $(s =_A t) \in \Ty(\Gamma)$ is interpreted as
+$$\int{\big.s =_A t}\n(\tup{a}) \defeq \begin{cases}
+    \{ * \} & \int{s}(\tup{a}) = \int{t}(\tup{a}) \\
+    \varnothing & \text{otherwise}
 \end{cases}$$
 
-Given $s \in \Tm(\Gamma,A)$, we interpret $\refl_s \in {\color{red} \Ty\big((\Gamma,\, x:A,\, y:A\pi), (s =_A s) \big) ??}$ as $\int{\refl_s}(\tup{a}) = *$.
+Given $s \in \Tm(\Gamma,A)$, we interpret $\refl_s \in \Tm\big(\Gamma, (s =_A s) \big)$ as $\int{\refl_s}(\tup{a}) = *$.
 
 {\color{red} Check rules}
 
