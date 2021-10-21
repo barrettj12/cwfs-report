@@ -37,6 +37,7 @@
 \newcommand{\lam}[2]{\lambda #1 \mapsto #2}
 \newcommand{\Sig}[2]{\sum_{#1} #2}              % Sigma type
 \newcommand{\refl}{\mathsf{refl}}
+\newcommand{\tproj}{\mathsf{pr}}
 
 % Substitutions
 \newcommand{\comp}[2]{#2#1}%{#1#2}                     % Composition of substitutions
@@ -73,6 +74,7 @@
 \newcommand{\tup}[1]{\overline{\smash{#1}\vphantom{a}}}
 \newcommand{\ang}[1]{\mathopen{}\left\langle #1 \right\rangle\mathclose{}}
 \newcommand{\pair}[2]{(#1,#2)}
+\newcommand{\sproj}{\pi}
 
 % Formatting
 \newcommand{\n}{%\hspace{-0.2em}
@@ -638,7 +640,13 @@ More generally, if $A \in \Ty(\Gamma)$ and $B \in \Ty \big( (\Gamma,\, x:A) \big
 Given terms $s \in \Tm(\Gamma, A)$ and $t \in \Tm \big( (\Gamma,\, x:A), B \big)$, the pair $(s,t) \in \Tm\Big( \Gamma, \Sig{(x:A)}{B(x)} \Big)$ is interpreted as
 $$\int{\big.(s,t)}\n(\tup{a})\ \defeq\ \Big( \int{s}\n(\tup{a}),\ \int{t}\n\big(\, \tup{a},\,\int{s}\n(\tup{a}) \,\big) \Big)$$
 
-{\color{red} Interpret projections, validate computation rule}
+Given a term $u \in \Tm\Big( \Gamma, \Sig{(x:A)}{B(x)} \Big)$, we interpret the first projection $\tproj_1(u) \in \Tm(\Gamma, A)$ as $$\int{\big.\tproj_1(u)}(\tup{a})\, \defeq\, \text{first coordinate of } \int{u}(\tup{a})$$%\sproj_1 \big( \int{u}(\tup{a}) \big)$$
+and the second projection $\tproj_2(u) \in \Tm \Big( \Gamma, B \big( \tproj_1(u) \big) \Big)$ as $$\int{\big.\tproj_2(u)}(\tup{a})\, \defeq\, \text{second coordinate of } \int{u}(\tup{a})$$%\sproj_2 \big( \int{u}(\tup{a}) \big)$$
+%where $\sproj_1$, $\sproj_2$ are the usual set-theoretic projections.
+These interpretations validate the computation rules
+\begin{align*}
+    \tproj_1 \big( (s,t) \big) \equiv s & & \tproj_2 \big( (s,t) \big) \equiv t & & \big( \tproj_1(u), \tproj_2(u) \big) \equiv u
+\end{align*}
 
 
 \subsection{Equality}
@@ -653,7 +661,7 @@ $$\int{\big.s =_A t}\n(\tup{a}) \defeq \begin{cases}
 
 Given $s \in \Tm(\Gamma,A)$, we interpret $\refl_s \in \Tm\big(\Gamma, (s =_A s) \big)$ as $\int{\refl_s}(\tup{a}) = *$.
 
-{\color{red} Check rules}
+Path induction is straightforward to interpret, as the only values of equality in this model are $\refl$.
 
 
 \section{More on the groupoid model}
