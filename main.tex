@@ -7,6 +7,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{parskip}    % remove paragraph indents
 \usepackage{stmaryrd}   % for \llbracket and \rrbracket
@@ -24,6 +25,10 @@
 \newtheorem{remark}[definition]{Remark}
 
 
+% List stuff
+\setlist[itemize,2]{label=$\rhd$}
+
+
 %%  MACROS
 
 % Type theory
@@ -33,9 +38,9 @@
 \newcommand{\emp}{()}%{\mathtt{empty}}          % Empty context
 \newcommand{\Bool}{\mathtt{Bool}}
 \newcommand{\String}{\mathtt{String}}
-\newcommand{\Pii}[2]{\prod_{#1} #2}             % Pi type
+\newcommand{\Pii}[2]{\textstyle\prod_{#1} #2}             % Pi type
 \newcommand{\lam}[2]{\lambda #1 \mapsto #2}
-\newcommand{\Sig}[2]{\sum_{#1} #2}              % Sigma type
+\newcommand{\Sig}[2]{\textstyle\sum_{#1} #2}              % Sigma type
 \newcommand{\refl}{\mathsf{refl}}
 \newcommand{\tproj}{\mathsf{pr}}
 
@@ -100,6 +105,9 @@ Interpret path induction in \S\ref{sec:gpd-eq}
 
 Fill in \hyperref[todo:date]{\underline{date}} on title page
 }
+
+
+
 
 
 \section{Introduction}
@@ -515,13 +523,29 @@ The empty context is interpreted by the trivial groupoid with one object and one
 
 A substitution $\sigma$ from $\Delta$ to $\Gamma$ is interpreted as a groupoid homomorphism $\int{\sigma}\colon \int{\Delta} \to \int{\Gamma}$.
 
-Henceforth, we will abbreviate $(a_1,\ldots,a_n) \in \int{\Gamma}$ as $\tup{a}$. For a context $\Gamma$, a \textit{type $A$ over $\Gamma$} is a family of \textit{groupoids} $\int{A}$ indexed by $\int{\Gamma}$. That is, for every $\tup{a} \in \int{\Gamma}$, we have a groupoid $\int{A}(\tup{a})$, and for every $\int{\Gamma}$-morphism $p \in \hom{\tup{a}}{\tup{b}}$, a groupoid isomorphism $\int{A}(p)\colon \int{A}(\tup{a}) \to \int{A}(\tup{b})$.
+Henceforth, we will abbreviate $(a_1,\ldots,a_n) \in \int{\Gamma}$ as $\tup{a}$. For a context $\Gamma$, a \textit{type $A$ over $\Gamma$} is a family of \textit{groupoids} $\int{A}$ indexed by $\int{\Gamma}$. That is:
+\begin{itemize}
+    \item For every $\tup{a} \in \int{\Gamma}$, we have a groupoid $\int{A}(\tup{a})$;
+    
+    \item For every $\int{\Gamma}$-morphism $p \in \hom{\tup{a}}{\tup{b}}$, a groupoid isomorphism $\int{A}(p)\colon \int{A}(\tup{a}) \to \int{A}(\tup{b})$, such that:
+    \begin{itemize}
+        \item $\int{A}(\id_{\tup{a}}) = \id_{\int{A}(\tup{a})}$;
+        
+        \item $\int{A}(p \circ q) = \int{A}(p) \circ \int{A}(q)$.
+    \end{itemize}
+\end{itemize}
 
 For a type $A$ over $\Gamma$, a term $s \in \Tm(\Gamma,A)$ is interpreted as a ``dependent functor'' $\int{\Gamma} \to \int{A}$:
 \begin{itemize}
     \item For each $\tup{a} \in \int{\Gamma}$, we have an object $\int{s}(\tup{a}) \in \int{A}(\tup{a})$;
     
     \item For each $\int{\Gamma}$-morphism $p \in \hom{\tup{a}}{\tup{b}}$, an $\int{A}(\tup{b})$-morphism $$\int{s}(p)\, \in\, \hom{\Big.\int{A}(p) \big( \int{s}(\tup{a}) \big)}{\,\int{s}(\tup{b})}$$
+    such that:
+    \begin{itemize}
+        \item $\int{s}(\id_{\tup{a}}) = \id_{\int{s}(\tup{a})}$;
+        
+        \item $\int{s}(p \circ q) = \int{s}(p) \circ \int{A}(p) \big( \int{s}(q) \big)$.
+    \end{itemize}
 \end{itemize}
 
 Given a substitution $\sigma\colon \Gamma \to \Delta$ and a type $B \in \Ty(\Delta)$, we interpret $\substType{\sigma}{B} \in \Ty(\Gamma)$ as follows. $\int{\substType{\sigma}{B}}$ sends:
@@ -621,7 +645,7 @@ $$\int{\big.A \to B}\n(\tup{a})\ \defeq\ \big\{ \text{functions from}\, \int{A}\
 
 More generally, if $A \in \Ty(\Gamma)$ and $B \in \Ty \big( (\Gamma,\, x:A) \big)$, then $\Pii{(x:A)}{B(x)}\in \Ty(\Gamma)$ is interpreted as
 \begin{align*}
-    \int{\Pii{(x:A)}{B(x)}}\hspace{-0.2em}(\tup{a})\ \defeq\ \Big\{ \text{functions sending each } a \in &\int{A}\n(\tup{a}) \\[-5mm]
+    \int{\Pii{(x:A)}{B(x)}}(\tup{a})\ \defeq\ \Big\{ \text{functions sending each } a \in &\int{A}\n(\tup{a}) \\[-2mm]
     \text{ to an element of } &\int{B}\n(\tup{a},a) \Big\}
 \end{align*}
 
@@ -647,7 +671,7 @@ $$\int{\big.A \times B}\n(\tup{a})\ \defeq\ \int{A}\n(\tup{a}) \times \int{B}\n(
 
 More generally, if $A \in \Ty(\Gamma)$ and $B \in \Ty \big( (\Gamma,\, x:A) \big)$, then $\Sig{(x:A)}{B(x)}\in \Ty(\Gamma)$ is interpreted as
 \begin{align*}
-    \int{\Sig{(x:A)}{B(x)}}\hspace{-0.2em}(\tup{a})\ \defeq\ \big\{ (a,b) \mathrel{\big|} a \in &\int{A}\n(\tup{a}),\ b \in \int{B}\n(\tup{a},a) \big\}
+    \int{\Sig{(x:A)}{B(x)}}(\tup{a})\ \defeq\ \big\{ (a,b) \mathrel{\big|} a \in &\int{A}\n(\tup{a}),\ b \in \int{B}\n(\tup{a},a) \big\}
 \end{align*}
 
 Given terms $s \in \Tm(\Gamma, A)$ and $t \in \Tm \big( (\Gamma,\, x:A), B \big)$, the pair $(s,t) \in \Tm\Big( \Gamma, \Sig{(x:A)}{B(x)} \Big)$ is interpreted as
@@ -690,7 +714,64 @@ In this section, we show how to interpret $\Pi$-types and $\Sigma$-types in the 
 
 \subsection{\texorpdfstring{$\Sigma$}{Sigma}-types}
 
-{\color{red} finish this}
+Given a context $\Gamma$ and types $A, B \in \Ty(\Gamma)$, the product type $(A \times B) \in \Ty(\Gamma)$ is interpreted as the family
+%$$\int{\big.A \to B}\n(a_1,\ldots,a_n)\ \defeq\ \big\{ f\colon \int{A}\n(a_1,\ldots,a_n)\, \to\, \int{B}\n(a_1,\ldots,a_n) \big\} $$
+$$\int{\big.A \times B}\n(\tup{a})\ \defeq\ \int{A}\n(\tup{a}) \times \int{B}\n(\tup{a})$$
+with morphisms
+\begin{align*}
+    \hom[\int{A \times B}(\tup{a})]{\big.(a,b)}{(a',b')}\\ \defeq\ \big\{ (p,q)& \mathrel{\big|} p \in \hom[\int{A}(\tup{a})]{a}{a'},\, q \in \hom[\int{B}(\tup{a})]{b}{b'} \big\}
+\end{align*}
+
+%A $\int{\Gamma}$-morphism $r \in \hom%[\int{\Gamma}]
+%{\tup{a}}{\tup{b}}$ maps to the groupoid homomorphism
+% \begin{align*}
+%     \int{\big.A \times B}(r)\colon\ \int{\big.A \times B}(\tup{a})\ &\to\ \int{\big.A \times B}(\tup{b}) \\
+%     (a,b)\ &\mapsto\ \Big( \int{A}(r)(a),\, \int{B}(r)(b) \Big)
+% \end{align*}
+
+More generally, if $A \in \Ty(\Gamma)$ and $B \in \Ty \big( (\Gamma,\, x:A) \big)$, then $\Sig{(x:A)}{B(x)}\in \Ty(\Gamma)$ is interpreted as
+\begin{align*}
+    \int{\Sig{(x:A)}{B(x)}}(\tup{a})\ \defeq\ \big\{ (a,b) \mathrel{\big|} a \in &\int{A}\n(\tup{a}),\ b \in \int{B}\n(\tup{a},a) \big\}
+\end{align*}
+with morphisms
+\begin{align*}
+    \hom%[\int{\Sig{(x:A)}{B(x)}}(\tup{a})]
+    {\big.(a,b)}{(a',b')}\ \defeq\ \big\{ (p,q)& \mathrel{\big|} p \in \hom[\int{A}(\tup{a})]{a}{a'},\, q \in \hom[\int{B}(\tup{a},a')]{\big.\int{B}(\id_{\tup{a}},p)(b)}{b'} \big\}
+\end{align*}
+
+A $\int{\Gamma}$-morphism $r \in \hom%[\int{\Gamma}]
+{\tup{c}}{\tup{d}}$ maps to the groupoid homomorphism
+\begin{align*}
+    \int{\Sig{(x:A)}{B(x)}}(r)\colon\ \int{\Sig{(x:A)}{B(x)}}(\tup{c})\ &\to\ \int{\Sig{(x:A)}{B(x)}}(\tup{d}) \\[2mm]
+    (a,b)\ &\mapsto\ \Big( \int{A}(r)(a),\, \int{B}(r,\id%_{\int{A}(r)(a)}
+    )(b) \Big)
+\end{align*}
+
+{\color{orange}
+For a type $A$ over $\Gamma$, a term $s \in \Tm(\Gamma,A)$ is interpreted as a ``dependent functor'' $\int{\Gamma} \to \int{A}$:
+\begin{itemize}
+    \item For each $\tup{a} \in \int{\Gamma}$, we have an object $\int{s}(\tup{a}) \in \int{A}(\tup{a})$;
+    
+    \item For each $\int{\Gamma}$-morphism $p \in \hom{\tup{a}}{\tup{b}}$, an $\int{A}(\tup{b})$-morphism $$\int{s}(p)\, \in\, \hom{\Big.\int{A}(p) \big( \int{s}(\tup{a}) \big)}{\,\int{s}(\tup{b})}$$
+\end{itemize}
+}
+
+Given terms $s \in \Tm(\Gamma, A)$ and $t \in \Tm \big( (\Gamma,\, x:A), B \big)$, the pair $(s,t) \in \Tm\Big( \Gamma, \Sig{(x:A)}{B(x)} \Big)$ is interpreted as the map sending
+\begin{itemize}
+    \item $\tup{a} \in \int{\Gamma}$ to $\Big( \int{s}\n(\tup{a}),\ \int{t}\n\big(\, \tup{a},\,\int{s}\n(\tup{a}) \,\big) \Big)$;
+    
+    \item $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to $\Big( \int{s}(p),\, \int{t}(p,\id) \Big)$.
+\end{itemize}
+
+{\color{red}
+Given a term $u \in \Tm\Big( \Gamma, \Sig{(x:A)}{B(x)} \Big)$, we interpret the first projection $\tproj_1(u) \in \Tm(\Gamma, A)$ as $$\int{\big.\tproj_1(u)}(\tup{a})\, \defeq\, \text{first coordinate of } \int{u}(\tup{a})$$%\sproj_1 \big( \int{u}(\tup{a}) \big)$$
+and the second projection $\tproj_2(u) \in \Tm \Big( \Gamma, B \big( \tproj_1(u) \big) \Big)$ as $$\int{\big.\tproj_2(u)}(\tup{a})\, \defeq\, \text{second coordinate of } \int{u}(\tup{a})$$%\sproj_2 \big( \int{u}(\tup{a}) \big)$$
+%where $\sproj_1$, $\sproj_2$ are the usual set-theoretic projections.
+These interpretations validate the computation rules
+\begin{align*}
+    \tproj_1 \big( (s,t) \big) \equiv s & & \tproj_2 \big( (s,t) \big) \equiv t & & \big( \tproj_1(u), \tproj_2(u) \big) \equiv u
+\end{align*}
+}
 
 
 \end{document}
