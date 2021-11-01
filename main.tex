@@ -99,9 +99,9 @@
 {\color{red}
 \section*{To do}
 
-Fill in Appendix \ref{app:gpd}
+Fill in $\Pi$-types in Appendix \ref{app:gpd}
 
-Interpret path induction in \S\ref{sec:gpd-eq}
+Interpret path induction, check rules in \S\ref{sec:set-eq} and \S\ref{sec:gpd-eq-ind}
 
 Fill in \hyperref[todo:date]{\underline{date}} on title page
 }
@@ -586,12 +586,12 @@ Finally, given a substitution $\sigma\colon \Delta \to \Gamma$ and term $t \in \
 We have now fully defined a category with families. We will leave the interpretation of $\Pi$-types and $\Sigma$-types to Appendix \ref{app:gpd}. However, we will talk here about \textit{equality types}, since they are the original motivation (and arguably, the defining feature) of the groupoid model.
 
 Given a type $A \in \Ty(\Gamma)$ and terms $s, t \in \Tm(\Gamma, A)$, the equality type $(s =_A t) \in \Ty(\Gamma)$ is interpreted as the \textit{hom-set}
-$$\int{\big.s =_A t}\n(\tup{a})\, \defeq\, \hom[\int{A}(\tup{a})]{\big.\int{s}(\tup{a})}{\int{t}(\tup{a})}$$
-as a \textit{discrete} groupoid (i.e.\ the only morphisms are identities).
+$$\int{\big.s =_A t}(\tup{a})\, \defeq\, \hom[\int{A}(\tup{a})]{\big.\int{s}(\tup{a})}{\int{t}(\tup{a})}$$
+as a \textit{discrete} groupoid (i.e.\ the only morphisms are identities). We send $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to the map $$\int{\big.s =_A t}(p)\colon\ q\ \mapsto\ \int{t}(p) \circ \int{A}(p)(q) \circ \inv{\big( \int{s}(p) \big)}$$
 
-Given $s \in \Tm(\Gamma,A)$, we interpret $\refl_s \in \Tm\big(\Gamma, (s =_A s) \big)$ as $$\int{\refl_s}\colon\, \tup{a}\, \mapsto\, \id_{\int{s}(\tup{a})}$$
+Given $s \in \Tm(\Gamma,A)$, we interpret $\refl_s \in \Tm\big(\Gamma, (s =_A s) \big)$ as the map sending $\tup{a} \in \int{\Gamma}$ to $\id_{\int{s}(\tup{a})}$, and $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to the identity on $\id_{\int{s}(\tup{b})}$.
 
-{\color{red} Check rules}
+Interpreting path induction requires us to understand $\Pi$-types in the groupoid model, so we'll leave this to the appendix (\S\ref{sec:gpd-eq-ind}).
 
 Importantly, since there are groupoids having distinct parallel morphisms, there are types in this model having distinct equalities between two elements. Therefore, the groupoid model provides a counterexample to UIP.
 
@@ -687,6 +687,7 @@ These interpretations validate the computation rules
 
 
 \subsection{Equality}
+\label{sec:set-eq}
 
 Perhaps the distinguishing feature of the set model is its treatment of equality types. Unlike in other models, equality here behaves exactly like a classical mathematician would expect.
 
@@ -698,7 +699,9 @@ $$\int{\big.s =_A t}\n(\tup{a}) \defeq \begin{cases}
 
 Given $s \in \Tm(\Gamma,A)$, we interpret $\refl_s \in \Tm\big(\Gamma, (s =_A s) \big)$ as $\int{\refl_s}(\tup{a}) = *$.
 
+{\color{red}
 Path induction is straightforward to interpret, as the only values of equality in this model are $\refl$.
+}
 
 
 \section{More on the groupoid model}
@@ -708,6 +711,7 @@ In this section, we show how to interpret $\Pi$-types and $\Sigma$-types in the 
 
 
 \subsection{\texorpdfstring{$\Pi$}{Pi}-types}
+\label{sec:gpd-pi}
 
 {\color{red} finish this}
 
@@ -778,6 +782,15 @@ These interpretations validate the computation rules
 \begin{align*}
     \tproj_1 \big( (s,t) \big) \equiv s & & \tproj_2 \big( (s,t) \big) \equiv t & & \big( \tproj_1(u), \tproj_2(u) \big) \equiv u
 \end{align*}
+
+
+\subsection{Path induction}
+\label{sec:gpd-eq-ind}
+
+{\color{red} 
+Interpret $J$?
+
+Check rules}
 
 
 \end{document}
