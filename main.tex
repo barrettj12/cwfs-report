@@ -747,15 +747,6 @@ A $\int{\Gamma}$-morphism $r \in \hom%[\int{\Gamma}]
     )(b) \Big)
 \end{align*}
 
-{\color{orange}
-For a type $A$ over $\Gamma$, a term $s \in \Tm(\Gamma,A)$ is interpreted as a ``dependent functor'' $\int{\Gamma} \to \int{A}$:
-\begin{itemize}
-    \item For each $\tup{a} \in \int{\Gamma}$, we have an object $\int{s}(\tup{a}) \in \int{A}(\tup{a})$;
-    
-    \item For each $\int{\Gamma}$-morphism $p \in \hom{\tup{a}}{\tup{b}}$, an $\int{A}(\tup{b})$-morphism $$\int{s}(p)\, \in\, \hom{\Big.\int{A}(p) \big( \int{s}(\tup{a}) \big)}{\,\int{s}(\tup{b})}$$
-\end{itemize}
-}
-
 Given terms $s \in \Tm(\Gamma, A)$ and $t \in \Tm \big( (\Gamma,\, x:A), B \big)$, the pair $(s,t) \in \Tm\Big( \Gamma, \Sig{(x:A)}{B(x)} \Big)$ is interpreted as the map sending
 \begin{itemize}
     \item $\tup{a} \in \int{\Gamma}$ to $\Big( \int{s}\n(\tup{a}),\ \int{t}\n\big(\, \tup{a},\,\int{s}\n(\tup{a}) \,\big) \Big)$;
@@ -763,15 +754,30 @@ Given terms $s \in \Tm(\Gamma, A)$ and $t \in \Tm \big( (\Gamma,\, x:A), B \big)
     \item $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to $\Big( \int{s}(p),\, \int{t}(p,\id) \Big)$.
 \end{itemize}
 
-{\color{red}
-Given a term $u \in \Tm\Big( \Gamma, \Sig{(x:A)}{B(x)} \Big)$, we interpret the first projection $\tproj_1(u) \in \Tm(\Gamma, A)$ as $$\int{\big.\tproj_1(u)}(\tup{a})\, \defeq\, \text{first coordinate of } \int{u}(\tup{a})$$%\sproj_1 \big( \int{u}(\tup{a}) \big)$$
-and the second projection $\tproj_2(u) \in \Tm \Big( \Gamma, B \big( \tproj_1(u) \big) \Big)$ as $$\int{\big.\tproj_2(u)}(\tup{a})\, \defeq\, \text{second coordinate of } \int{u}(\tup{a})$$%\sproj_2 \big( \int{u}(\tup{a}) \big)$$
-%where $\sproj_1$, $\sproj_2$ are the usual set-theoretic projections.
+Given a term $u \in \Tm\Big( \Gamma, \Sig{(x:A)}{B(x)} \Big)$, we interpret the first projection $\tproj_1(u) \in \Tm(\Gamma, A)$ as the map sending
+\begin{itemize}
+    \item $\tup{a} \in \int{\Gamma}$ to the first coordinate of $\int{u}(\tup{a})$;
+    
+    \item $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to the first coordinate of $\int{u}(p)$.
+\end{itemize}
+
+We let $B \big( \tproj_1(u) \big) \in \Ty(\Gamma)$ be the type sending
+\begin{itemize}
+    \item $\tup{a} \in \int{\Gamma}$ to $\int{B} \big( \tup{a},\, \int{\tproj_1(u)}(\tup{a}) \big)$;
+    
+    \item $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to $\int{B} \big( p,\, \int{\tproj_1(u)}(p) \big)$.
+\end{itemize}
+Then, the second projection $\tproj_2(u) \in \Tm \Big( \Gamma, B \big( \tproj_1(u) \big) \Big)$ is interpreted as the map sending
+\begin{itemize}
+    \item $\tup{a} \in \int{\Gamma}$ to the second coordinate of $\int{u}(\tup{a})$;
+    
+    \item $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to the second coordinate of $\int{u}(p)$.
+\end{itemize}
+
 These interpretations validate the computation rules
 \begin{align*}
     \tproj_1 \big( (s,t) \big) \equiv s & & \tproj_2 \big( (s,t) \big) \equiv t & & \big( \tproj_1(u), \tproj_2(u) \big) \equiv u
 \end{align*}
-}
 
 
 \end{document}
