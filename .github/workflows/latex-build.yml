@@ -14,4 +14,6 @@ jobs:
         uses: EndBug/add-and-commit@v7.4.0
         with:
           add: 'main.pdf'
+          pull: 'NO-PULL'
+          push: origin +${branch input} --set-upstream
 
