@@ -15,5 +15,6 @@ jobs:
         with:
           add: 'main.pdf'
           pull: 'NO-PULL'
-          push: origin +${GITHUB_REF##*/} --set-upstream
+          message: ${{ github.event.head_commit.message }}
+#          push: origin +${GITHUB_REF##*/} --set-upstream     # How to force push?
 
