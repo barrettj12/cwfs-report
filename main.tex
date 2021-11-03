@@ -713,7 +713,62 @@ In this section, we show how to interpret $\Pi$-types and $\Sigma$-types in the 
 \subsection{\texorpdfstring{$\Pi$}{Pi}-types}
 \label{sec:gpd-pi}
 
-{\color{red} finish this}
+Given a context $\Gamma$ and types $A, B \in \Ty(\Gamma)$, the function type $(A \to B) \in \Ty(\Gamma)$ is interpreted as the family
+$$\int{\big.A \to B}(\tup{c})\ \defeq\ \text{category of functors from }\int{A}(\tup{c}) \text{ to } \int{B}(\tup{c})$$
+where the morphisms are natural transformations.
+
+More generally, if $A \in \Ty(\Gamma)$ and $B \in \Ty \big( (\Gamma,\, x:A) \big)$, then $\Pii{(x:A)}{B(x)} \in \Ty(\Gamma)$ is interpreted as follows. For each $\tup{c} \in \int{\Gamma}$, $\int{\Pii{(x:A)}{B(x)}}(\tup{c})$ is the groupoid of ``dependent functors'' from $\int{A}(\tup{c})$ to $\int{B}(\tup{c})$. The objects are maps $f$ sending:
+\begin{itemize}
+    \item Each $a \in \int{A}(\tup{c})$ to an object $f(a) \in \int{B}(\tup{c},a)$;
+    
+    \item Each morphism $p \in \hom[\int{A}(\tup{c})]{a}{a'}$ to a morphism $$f(p)\, \in\, \hom[\int{B}(\tup{c},a')]{\Big.\int{B}(\id_{\tup{c}},p) \big( f(a) \big)}{\,f(a')}$$
+    such that:
+    \begin{itemize}
+        \item $f(\id_a) = \id_{f(a)}$;
+        
+        \item $f(p \circ q) = f(p) \circ \int{B}(\id_{\tup{c}},p) \big( f(q) \big)$.
+    \end{itemize}
+\end{itemize}
+
+A morphism from $f$ to $g$ is a ``dependent natural transformation'' $\alpha$, sending each $a \in \int{A}(\tup{c})$ to a morphism $\alpha(a) \in \hom[\int{B}(\tup{c},a)]{\big.f(a)}{\, g(a)}$, so that for each $p \in \hom[\int{A}(\tup{c})]{a}{a'}$, the following diagram commutes:
+\begin{center}
+\begin{tikzcd}[row sep=4.5em, column sep=4.5em]
+    f(a)  \arrow[swap]{d}{\alpha(a)}  &    \int{B}(\id_{\tup{c}},p) \big( f(a) \big)  \arrow[swap,shift left=2.2em]{d}{\int{B}(\id_{\tup{c}},p) \big( \alpha(a) \big)}  \arrow{r}{f(p)}  &   f(a')  \arrow{d}{\alpha(a')} \\
+    g(a)                        &    \int{B}(\id_{\tup{c}},p) \big( g(a) \big)                                                             \arrow{r}{g(p)}  &   g(a')
+\end{tikzcd}
+\end{center}
+
+
+{\color{orange}
+For a type $A$ over $\Gamma$, a term $s \in \Tm(\Gamma,A)$ is interpreted as a ``dependent functor'' $\int{\Gamma} \to \int{A}$:
+\begin{itemize}
+    \item For each $\tup{a} \in \int{\Gamma}$, we have an object $\int{s}(\tup{a}) \in \int{A}(\tup{a})$;
+    
+    \item For each $\int{\Gamma}$-morphism $p \in \hom{\tup{a}}{\tup{b}}$, an $\int{A}(\tup{b})$-morphism $$\int{s}(p)\, \in\, \hom{\Big.\int{A}(p) \big( \int{s}(\tup{a}) \big)}{\,\int{s}(\tup{b})}$$
+    such that:
+    \begin{itemize}
+        \item $\int{s}(\id_{\tup{a}}) = \id_{\int{s}(\tup{a})}$;
+        
+        \item $\int{s}(p \circ q) = \int{s}(p) \circ \int{A}(p) \big( \int{s}(q) \big)$.
+    \end{itemize}
+\end{itemize}
+}
+    
+
+{\color{red}
+Given a term $t \in \Tm \big( (\Gamma,\, x:A), B \big)$, the lambda abstraction $(\lam{(x:A)}{t}) \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$ is interpreted as
+$$\int{\big.\lam{(x:A)}{t}}\n(\tup{a})\ \defeq\ a %\in \int{A}\n(\tup{a})
+\mapsto \int{t}\n(\tup{a},a)$$
+
+Now, given a term $s \in \Tm(\Gamma, A)$, we write $B(s) \defeq \substType{(\id,s)}{B} \in \Ty(\Gamma)$, where $\extsub{\id}{s}$ is the extended substitution $\Gamma \to (\Gamma,\, x:A)$. Given another term $f \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$, the application $f(s) \in \Tm\big(\Gamma,B(s) \big)$ is interpreted as
+$$\int{\big.f(s)
+}\n(\tup{a})\ \defeq\ \int{f}\n(\tup{a}) \big( \int{s}\n(\tup{a}) \big)$$
+
+Letting $t(s) \defeq \substTerm{\extsub{\id}{s}}{t} \in \Ty\big(\Gamma,B(s)\big)$, the computation rule $$(\lam{(x:A)}{t})(s)\ \equiv\ t(s)$$ holds since both sides are interpreted as $\tup{a}\, \mapsto\, \int{t}\n\big(\tup{a}, \int{s}\n(\tup{a}) \big)$.
+
+Given $f \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$, write $f(x) \in \Tm \big( (\Gamma,\, x:A), B \big)$ for the term interpreted $$\int{\big.f(x)}\n(\tup{a},a)\, \defeq\, \int{f}\n(\tup{a})(a)$$
+Then $\int{\big.\lam{(x:A)}{f(x)}} = \int{f}$, validating the uniqueness rule $$\big( \lam{(x:A)}{f(x)} \big) \equiv f$$
+}
 
 
 \subsection{\texorpdfstring{$\Sigma$}{Sigma}-types}
