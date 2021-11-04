@@ -15,7 +15,7 @@ jobs:
       - name: Upload PDF to repo
         run: |
           # Configure git
-          git config user.name "GitHub Actions Bot"
+          git config user.name $GITHUB_ACTOR
           git config user.email "<>"
           # Roll back git history to before last commit
           # This also adds all changes in the last commit to the working tree
