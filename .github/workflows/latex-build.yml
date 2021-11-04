@@ -8,10 +8,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 2
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v2
+      - name: Compile LateX
+        uses: vinay0410/tectonic-action@v1.1.2
         with:
-          root_file: main.tex
+          tex_path: cwfs-report.tex
       - name: Upload PDF to repo
         run: |
           # Configure git
@@ -21,9 +21,7 @@ jobs:
           # This also adds all changes in the last commit to the working tree
           git reset --soft HEAD~1
           # Add pdf file to working tree
-          git add main.pdf
-          # Rename pdf
-          git mv main.pdf cwfs-report.pdf
+          git add cwfs-report.pdf
           # Commit changes and pdf using same commit info as before 
           git commit -C HEAD@{1}
           # Force push to overwrite git history
