@@ -1,20 +1,28 @@
 name: Build LaTeX document
-on: [push, pull_request]
+on: [push]
 jobs:
   build_latex:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v2
-      - name: Compile LaTeX document
+        with:
+          fetch-depth: 2
+      - name: Compile LateX
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: main.tex
+          root_file: cwfs-report.tex
       - name: Upload PDF to repo
-        uses: EndBug/add-and-commit@v7.4.0
-        with:
-          add: 'main.pdf'
-          pull: 'NO-PULL'
-          message: ${{ github.event.head_commit.message }}
-#          push: origin +${GITHUB_REF##*/} --set-upstream     # How to force push?
-
+        run: |
+          # Configure git
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "<>"
+          # Roll back git history to before last commit
+          # This also adds all changes in the last commit to the working tree
+          git reset --soft HEAD~1
+          # Add pdf file to working tree
+          git add cwfs-report.pdf
+          # Commit changes and pdf using same commit info as before 
+          git commit -C HEAD@{1}
+          # Force push to overwrite git history
+          git push --force
