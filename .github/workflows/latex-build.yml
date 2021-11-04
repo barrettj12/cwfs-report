@@ -9,9 +9,11 @@ jobs:
         with:
           fetch-depth: 2
       - name: Compile LateX
-        uses: vinay0410/tectonic-action@v1.1.2
+        uses: vinay0410/tectonic-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tex_path: cwfs-report.tex
+          tex_path: 'cwfs-report.tex'
       - name: Upload PDF to repo
         run: |
           # Configure git
