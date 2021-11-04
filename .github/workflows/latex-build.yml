@@ -14,9 +14,9 @@ jobs:
           root_file: cwfs-report.tex
       - name: Upload PDF to repo
         run: |
-          # Configure git
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "<>"
+          # Configure git to use name and email of whoever made the last commit
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
           # Roll back git history to before last commit
           # This also adds all changes in the last commit to the working tree
           git reset --soft HEAD~1
