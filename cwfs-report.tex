@@ -738,6 +738,26 @@ A morphism from $f$ to $g$ is a ``dependent natural transformation'' $\alpha$, s
 \end{tikzcd}
 \end{center}
 
+Each $p \in \hom[\int{\Gamma}]{\tup{c}}{\tup{d}}$ induces the groupoid homomorphism $$\int{\Pii{(x:A)}{B(x)}}(p)\colon\ \int{\Pii{(x:A)}{B(x)}}(\tup{c})\ \to\ \int{\Pii{(x:A)}{B(x)}}(\tup{d})$$
+which sends $f$ to the map $\int{B}(p,\id) \circ f \circ \int{A}(\inv{p})$.
+    
+
+Given a term $t \in \Tm \big( (\Gamma,\, x:A), B \big)$, the lambda abstraction $(\lam{(x:A)}{t}) \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$ is interpreted as follows:
+\begin{itemize}
+    \item Given $\tup{c} \in \int{\Gamma}$, the map $\int{\lam{(x:A)}{t}}(\tup{c})% \in \int{\Pii{(x:A)}{B(x)}}(\tup{c})
+    $ sends:
+    \begin{itemize}
+        \item Each $a \in \int{A}(\tup{c})$ to $\int{t}(\tup{c},a)% \in \int{B}(\tup{c},a)
+        $;
+    
+        \item Each morphism $r \in \hom[\int{A}(\tup{c})]{a}{a'}$ to $\int{t}(\id_{\tup{c}},r)$;% morphism $$f(p)\, \in\, \hom[\int{B}(\tup{c},a')]{\Big.\int{B}(\id_{\tup{c}},p) \big( f(a) \big)}{\,f(a')}$$
+    \end{itemize}
+    
+    \item Given $p \in \hom[\int{\Gamma}]{\tup{c}}{\tup{d}}$, the 
+    transformation $\int{\lam{(x:A)}{t}}(p)%\ \in\ \hom[\int{\Pii{(x:A)}{B(x)}}(\tup{d})]{\Big.\int{\Pii{(x:A)}{B(x)}}(p) \big( \int{\lam{(x:A)}{t}}(\tup{c}) \big)}{\,\int{\lam{(x:A)}{t}}(\tup{d})}$
+    $ sends $a \in \int{A}(\tup{c})$ to $\int{t}(p,\id_a)$.
+\end{itemize}
+
 
 {\color{orange}
 For a type $A$ over $\Gamma$, a term $s \in \Tm(\Gamma,A)$ is interpreted as a ``dependent functor'' $\int{\Gamma} \to \int{A}$:
@@ -753,12 +773,8 @@ For a type $A$ over $\Gamma$, a term $s \in \Tm(\Gamma,A)$ is interpreted as a `
     \end{itemize}
 \end{itemize}
 }
-    
 
 {\color{red}
-Given a term $t \in \Tm \big( (\Gamma,\, x:A), B \big)$, the lambda abstraction $(\lam{(x:A)}{t}) \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$ is interpreted as
-$$\int{\big.\lam{(x:A)}{t}}\n(\tup{a})\ \defeq\ a %\in \int{A}\n(\tup{a})
-\mapsto \int{t}\n(\tup{a},a)$$
 
 Now, given a term $s \in \Tm(\Gamma, A)$, we write $B(s) \defeq \substType{(\id,s)}{B} \in \Ty(\Gamma)$, where $\extsub{\id}{s}$ is the extended substitution $\Gamma \to (\Gamma,\, x:A)$. Given another term $f \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$, the application $f(s) \in \Tm\big(\Gamma,B(s) \big)$ is interpreted as
 $$\int{\big.f(s)
