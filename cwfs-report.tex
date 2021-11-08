@@ -99,8 +99,6 @@
 {\color{red}
 \section*{To do}
 
-Fill in $\Pi$-types in Appendix \ref{app:gpd}
-
 Interpret path induction, check rules in \S\ref{sec:set-eq} and \S\ref{sec:gpd-eq-ind}
 
 Fill in \hyperref[todo:date]{\underline{date}} on title page
@@ -653,7 +651,7 @@ Given a term $t \in \Tm \big( (\Gamma,\, x:A), B \big)$, the lambda abstraction 
 $$\int{\big.\lam{(x:A)}{t}}\n(\tup{a})\ \defeq\ a %\in \int{A}\n(\tup{a})
 \mapsto \int{t}\n(\tup{a},a)$$
 
-Now, given a term $s \in \Tm(\Gamma, A)$, we write $B(s) \defeq \substType{(\id,s)}{B} \in \Ty(\Gamma)$, where $\extsub{\id}{s}$ is the extended substitution $\Gamma \to (\Gamma,\, x:A)$. Given another term $f \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$, the application $f(s) \in \Tm\big(\Gamma,B(s) \big)$ is interpreted as
+Now, given a term $s \in \Tm(\Gamma, A)$, we write $B(s) \defeq \substType{\extsub{\id}{s}}{B} \in \Ty(\Gamma)$, where $\extsub{\id}{s}$ is the extended substitution $\Gamma \to (\Gamma,\, x:A)$. Given another term $f \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$, the application $f(s) \in \Tm\big(\Gamma,B(s) \big)$ is interpreted as
 $$\int{\big.f(s)
 }\n(\tup{a})\ \defeq\ \int{f}\n(\tup{a}) \big( \int{s}\n(\tup{a}) \big)$$
 
@@ -758,33 +756,12 @@ Given a term $t \in \Tm \big( (\Gamma,\, x:A), B \big)$, the lambda abstraction 
     $ sends $a \in \int{A}(\tup{c})$ to $\int{t}(p,\id_a)$.
 \end{itemize}
 
-
-{\color{orange}
-For a type $A$ over $\Gamma$, a term $s \in \Tm(\Gamma,A)$ is interpreted as a ``dependent functor'' $\int{\Gamma} \to \int{A}$:
+Now, given terms $f \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$ and $s \in \Tm(\Gamma, A)$, the application $f(s) \in \Tm\big(\Gamma, B(s) \big)$ is interpreted as the map sending:
 \begin{itemize}
-    \item For each $\tup{a} \in \int{\Gamma}$, we have an object $\int{s}(\tup{a}) \in \int{A}(\tup{a})$;
+    \item $\tup{c} \in \int{\Gamma}$ to $\int{f}(\tup{c})\big( \int{s}(\tup{c}) \big)$;
     
-    \item For each $\int{\Gamma}$-morphism $p \in \hom{\tup{a}}{\tup{b}}$, an $\int{A}(\tup{b})$-morphism $$\int{s}(p)\, \in\, \hom{\Big.\int{A}(p) \big( \int{s}(\tup{a}) \big)}{\,\int{s}(\tup{b})}$$
-    such that:
-    \begin{itemize}
-        \item $\int{s}(\id_{\tup{a}}) = \id_{\int{s}(\tup{a})}$;
-        
-        \item $\int{s}(p \circ q) = \int{s}(p) \circ \int{A}(p) \big( \int{s}(q) \big)$.
-    \end{itemize}
+    \item $p \in \hom[\int{\Gamma}]{\tup{c}}{\tup{d}}$ to $\int{f}(p)\big( \int{s}(p) \big)$.
 \end{itemize}
-}
-
-{\color{red}
-
-Now, given a term $s \in \Tm(\Gamma, A)$, we write $B(s) \defeq \substType{(\id,s)}{B} \in \Ty(\Gamma)$, where $\extsub{\id}{s}$ is the extended substitution $\Gamma \to (\Gamma,\, x:A)$. Given another term $f \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$, the application $f(s) \in \Tm\big(\Gamma,B(s) \big)$ is interpreted as
-$$\int{\big.f(s)
-}\n(\tup{a})\ \defeq\ \int{f}\n(\tup{a}) \big( \int{s}\n(\tup{a}) \big)$$
-
-Letting $t(s) \defeq \substTerm{\extsub{\id}{s}}{t} \in \Ty\big(\Gamma,B(s)\big)$, the computation rule $$(\lam{(x:A)}{t})(s)\ \equiv\ t(s)$$ holds since both sides are interpreted as $\tup{a}\, \mapsto\, \int{t}\n\big(\tup{a}, \int{s}\n(\tup{a}) \big)$.
-
-Given $f \in \Tm\big( \Gamma, \Pii{(x:A)}{B(x)} \big)$, write $f(x) \in \Tm \big( (\Gamma,\, x:A), B \big)$ for the term interpreted $$\int{\big.f(x)}\n(\tup{a},a)\, \defeq\, \int{f}\n(\tup{a})(a)$$
-Then $\int{\big.\lam{(x:A)}{f(x)}} = \int{f}$, validating the uniqueness rule $$\big( \lam{(x:A)}{f(x)} \big) \equiv f$$
-}
 
 
 \subsection{\texorpdfstring{$\Sigma$}{Sigma}-types}
