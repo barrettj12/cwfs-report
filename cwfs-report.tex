@@ -12,7 +12,7 @@
 \usepackage{parskip}    % remove paragraph indents
 \usepackage{stmaryrd}   % for \llbracket and \rrbracket
 \usepackage{tikz-cd}
-\usepackage{tkz-graph}  % for drawing groupoids
+%\usepackage{tkz-graph}  % for drawing groupoids
 \usepackage[nottoc]{tocbibind}
 \usepackage{url}
 \usepackage{xcolor}
@@ -502,21 +502,20 @@ The morphisms of $\int{\Gamma}$ are those induced by the groupoid structure on e
 \begin{align*}
     \hom[\int{\Gamma}]{\big.(a_1,\ldots,a_n)}{(b_1,\ldots,b_n)}\\ \defeq\ \big\{ (p_1, \ldots, p_n)& \mathrel{\big|} p_i \in \hom{\gfunc{p_1 \cdots p_{i-1}} a_i}{b_i} \big\}
 \end{align*}
-
-\vspace{-2mm}
-\begin{minipage}[b]{0.83\linewidth}
-The empty context is interpreted by the trivial groupoid with one object and one identity morphism, as shown on the right.
-\end{minipage}
-\hfill
-\begin{minipage}[b]{0.12\linewidth}
-\begin{tikzpicture}[scale=1]
-    \GraphInit[vstyle=Classic]
-    \SetVertexSimple[MinSize=1mm]
-    \Vertex[NoLabel]{A}
-    \Loop[dist=8mm,dir=NO%label=$\id$,labelstyle={above}
-    ](A)
-\end{tikzpicture}
-\end{minipage}
+% \vspace{-2mm}
+% \begin{minipage}[b]{0.83\linewidth}
+The empty context is interpreted by the trivial groupoid with one object $*$ and one morphism $\id_{*}$.
+% \end{minipage}
+% \hfill
+% \begin{minipage}[b]{0.12\linewidth}
+% \begin{tikzpicture}[scale=1]
+%     \GraphInit[vstyle=Classic]
+%     \SetVertexSimple[MinSize=1mm]
+%     \Vertex[NoLabel]{A}
+%     \Loop[dist=8mm,dir=NO%label=$\id$,labelstyle={above}
+%     ](A)
+% \end{tikzpicture}
+% \end{minipage}
 
 
 A substitution $\sigma$ from $\Delta$ to $\Gamma$ is interpreted as a groupoid homomorphism $\int{\sigma}\colon \int{\Delta} \to \int{\Gamma}$.
