@@ -99,7 +99,7 @@
 {\color{red}
 \section*{To do}
 
-Interpret path induction, check rules in \S\ref{sec:set-eq} and \S\ref{sec:gpd-eq-ind}
+Interpret path induction, check rules in \S\ref{sec:gpd-eq-ind}
 
 Fill in \hyperref[todo:date]{\underline{date}} on title page
 }
@@ -696,9 +696,15 @@ $$\int{\big.s =_A t}\n(\tup{a}) \defeq \begin{cases}
 
 Given $s \in \Tm(\Gamma,A)$, we interpret $\refl_s \in \Tm\big(\Gamma, (s =_A s) \big)$ as $\int{\refl_s}(\tup{a}) = *$.
 
-{\color{red}
-Path induction is straightforward to interpret, as the only values of equality in this model are $\refl$.
-}
+For path induction, given:
+\begin{itemize}
+%    \item $s \in \Tm(\Gamma, A)$;
+    \item $B \in \Ty\big( (\Gamma,\, x:A,\, y:A\pi,\, p: x =_A y) \big)$;
+    \item $b \in \Tm\big( (\Gamma,\, x:A),\, C(x,x,\refl_x) \big)$;
+\end{itemize}
+we interpret $J_{B,b} \in \Tm(C)$ by
+$\int{J_{B,b}}(\tup{c},a,a',k) \defeq \int{b}(\tup{c},a)$. This is well-typed since given $$(\tup{c},a,a',k)\, \in\, \int{\Gamma,\, x:A,\, y:A\pi,\, p: x =_A y}$$ we must actually have $a=a'$ by the existence of $k$. This interpretation validates the rule
+$$J_{B,b}(x,x,p) \equiv b(x)$$
 
 
 \section{More on the groupoid model}
