@@ -88,24 +88,12 @@
 
 \title{Categories with families}
 \author{Jordan Mitchell Barrett}
-\date{Originally published: {\color{red}\label{todo:date} \today} \\[2mm] This version: \today}
+\date{Originally published: November 12, 2021 \\[2mm] This version: \today}
 
 \begin{document}
 
 \maketitle
 \tableofcontents
-
-
-{\color{red}
-\section*{To do}
-
-Interpret path induction, check rules in \S\ref{sec:gpd-eq-ind}
-
-Fill in \hyperref[todo:date]{\underline{date}} on title page
-}
-
-
-
 
 
 \section{Introduction}
@@ -577,20 +565,18 @@ Finally, given a substitution $\sigma\colon \Delta \to \Gamma$ and term $t \in \
 \end{itemize}
 
 
-\subsection{Equality}
-\label{sec:gpd-eq}
+%\subsection{Equality}
+%\label{sec:gpd-eq}
 
-We have now fully defined a category with families. We will leave the interpretation of $\Pi$-types and $\Sigma$-types to Appendix \ref{app:gpd}. However, we will talk here about \textit{equality types}, since they are the original motivation (and arguably, the defining feature) of the groupoid model.
+We have now fully defined a category with families. We will leave the interpretation of $\Pi$-types and $\Sigma$-types to Appendix \ref{app:gpd}. However, we will briefly talk here about \textit{equality types}, since they are the original motivation (and arguably, the defining feature) of the groupoid model.
 
-Given a type $A \in \Ty(\Gamma)$ and terms $s, t \in \Tm(\Gamma, A)$, the equality type $(s =_A t) \in \Ty(\Gamma)$ is interpreted as the \textit{hom-set}
+The idea is that equalities are interpreted as the \textit{morphisms} in a groupoid. More precisely, given a type $A \in \Ty(\Gamma)$ and terms $s, t \in \Tm(\Gamma, A)$, the equality type $(s =_A t) \in \Ty(\Gamma)$ is interpreted as the \textit{hom-set}
 $$\int{\big.s =_A t}(\tup{a})\, \defeq\, \hom[\int{A}(\tup{a})]{\big.\int{s}(\tup{a})}{\int{t}(\tup{a})}$$
-as a \textit{discrete} groupoid (i.e.\ the only morphisms are identities). We send $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to the map $$\int{\big.s =_A t}(p)\colon\ q\ \mapsto\ \int{t}(p) \circ \int{A}(p)(q) \circ \inv{\big( \int{s}(p) \big)}$$
+as a \textit{discrete} groupoid (i.e.\ the only morphisms are identities).% We send $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to the map $$\int{\big.s =_A t}(p)\colon\ q\ \mapsto\ \int{t}(p) \circ \int{A}(p)(q) \circ \inv{\big( \int{s}(p) \big)}$$
+%
+%Given $s \in \Tm(\Gamma,A)$, we interpret $\refl_s \in \Tm\big(\Gamma, (s =_A s) \big)$ as the map sending $\tup{a} \in \int{\Gamma}$ to $\id_{\int{s}(\tup{a})}$, and $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to the identity on $\id_{\int{s}(\tup{b})}$.
 
-Given $s \in \Tm(\Gamma,A)$, we interpret $\refl_s \in \Tm\big(\Gamma, (s =_A s) \big)$ as the map sending $\tup{a} \in \int{\Gamma}$ to $\id_{\int{s}(\tup{a})}$, and $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to the identity on $\id_{\int{s}(\tup{b})}$.
-
-Interpreting path induction requires us to understand $\Pi$-types in the groupoid model, so we'll leave this to the appendix (\S\ref{sec:gpd-eq-ind}).
-
-Importantly, since there are groupoids having distinct parallel morphisms, there are types in this model having distinct equalities between two elements. Therefore, the groupoid model provides a counterexample to UIP.
+More details (including the functorial part of $\int{s =_A t}$, and interpretation of $\refl$ and path induction) can be found in the appendix (\S\ref{sec:gpd-eq-ind}). Importantly, since there are groupoids having distinct parallel morphisms, there are types in this model having distinct equalities between two elements. Therefore, the groupoid model provides a counterexample to UIP.
 
 
 \section{Conclusion}
@@ -702,7 +688,7 @@ For path induction, given:
     \item $B \in \Ty\big( (\Gamma,\, x:A,\, y:A\pi,\, p: x =_A y) \big)$;
     \item $b \in \Tm\big( (\Gamma,\, x:A),\, C(x,x,\refl_x) \big)$;
 \end{itemize}
-we interpret $J_{B,b} \in \Tm(C)$ by
+we interpret $J_{B,b} \in \Tm(B)$ by
 $\int{J_{B,b}}(\tup{c},a,a',k) \defeq \int{b}(\tup{c},a)$. This is well-typed since given $$(\tup{c},a,a',k)\, \in\, \int{\Gamma,\, x:A,\, y:A\pi,\, p: x =_A y}$$ we must actually have $a=a'$ by the existence of $k$. This interpretation validates the rule
 $$J_{B,b}(x,x,p) \equiv b(x)$$
 
@@ -837,13 +823,30 @@ These interpretations validate the computation rules
 \end{align*}
 
 
-\subsection{Path induction}
+\subsection{Equality}
 \label{sec:gpd-eq-ind}
 
-{\color{red} 
-Interpret $J$?
+Given a type $A \in \Ty(\Gamma)$ and terms $s, t \in \Tm(\Gamma, A)$, the equality type $(s =_A t) \in \Ty(\Gamma)$ is interpreted as the \textit{hom-set}
+$$\int{\big.s =_A t}(\tup{a})\, \defeq\, \hom[\int{A}(\tup{a})]{\big.\int{s}(\tup{a})}{\int{t}(\tup{a})}$$
+as a \textit{discrete} groupoid (i.e.\ the only morphisms are identities). We send $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to the map $$\int{\big.s =_A t}(p)\colon\ q\ \mapsto\ \int{t}(p) \circ \int{A}(p)(q) \circ \inv{\big( \int{s}(p) \big)}$$
 
-Check rules}
+Given $s \in \Tm(\Gamma,A)$, we interpret $\refl_s \in \Tm\big(\Gamma, (s =_A s) \big)$ as the map sending $\tup{a} \in \int{\Gamma}$ to $\id_{\int{s}(\tup{a})}$, and $p \in \hom[\int{\Gamma}]{\tup{a}}{\tup{b}}$ to the identity on $\id_{\int{s}(\tup{b})}$.
+
+
+For path induction, given:
+\begin{itemize}
+%    \item $s \in \Tm(\Gamma, A)$;
+    \item $B \in \Ty\big( (\Gamma,\, x:A,\, y:A\pi,\, p: x =_A y) \big)$;
+    \item $b \in \Tm\big( (\Gamma,\, x:A),\, C(x,x,\refl_x) \big)$;
+\end{itemize}
+we interpret $J_{B,b} \in \Tm(B)$ by
+\begin{align*}
+    \int{J_{B,b}}(\tup{c},a,a',k)\, &\defeq\, \int{B}(\id_{\tup{c}},\id_a,k,\id_k) \big( \int{b}(\tup{c},a) \big) \\
+    \int{J_{B,b}}(p,q,q',*)\, &\defeq\, \int{B}(\id_{\tup{c}},\id_a,k,\id_k) \big( \int{b}(p,q) \big)
+\end{align*}
+
+This interpretation validates the rule
+$$J_{B,b}(x,x,p) \equiv b(x)$$
 
 
 \end{document}
